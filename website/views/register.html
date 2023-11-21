@@ -2,25 +2,29 @@
 {% set page_title = 'Register' %}
 
 {% block page_body %}
-<h1>Register</h1>
+<h1 class="mb-4">Register</h1>
 
 <form action="" method="post">
     <div class="col-12 col-md-6 col-lg-4">
         <div class="mb-3">
             <label for="first_name" class="form-label">First Name</label>
-            <input name="first_name" id="first_name" type="text" class="form-control">
+            <input name="first_name" id="first_name" type="text" class="form-control" required autocomplete="off">
         </div>
         <div class="mb-3">
             <label for="last_name" class="form-label">Last Name</label>
-            <input name="last_name" id="last_name" type="text" class="form-control">
+            <input name="last_name" id="last_name" type="text" class="form-control" required>
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input name="email" id="email" type="email" class="form-control">
+            <input name="email" id="email" type="email" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="phone" class="form-label">Phone</label>
+            <input name="phone" id="phone" type="number" class="form-control" required>
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
-            <input name="password" id="password" type="password" class="form-control">
+            <input name="password" id="password" type="password" class="form-control" required>
         </div>
     </div>
 

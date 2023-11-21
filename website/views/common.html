@@ -1,4 +1,5 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -6,10 +7,17 @@
 
     <link rel="stylesheet" href="{{url_for('static',filename='bootstrap/bootstrap.css')}}">
 </head>
+
 <body>
     {% block main_body %}{% endblock %}
-    
+
 
     <script src="{{url_for('static',filename='bootstrap/bootstrap.js')}}"></script>
+    <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
 </body>
+
 </html>

@@ -12,16 +12,45 @@
                 <a class="nav-link {{'text-primary' if page_title == 'Home'}}" href="{{url_for('views.home')}}">Home</a>
                 <a class="nav-link  {{'text-primary' if page_title == 'About'}}"
                     href="{{url_for('views.about')}}">About</a>
-                <a class="nav-link  {{'text-primary' if page_title == 'Login'}}"
-                    href="{{url_for('auth.login')}}">Login</a>
-                <a class="nav-link  {{'text-primary' if page_title == 'Register'}}"
-                    href="{{url_for('auth.register')}}">Register</a>
+            </div>
+            <div class="ms-auto navbar-nav">
+                {% if session.user %}
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
+                        Welcome, {{session.user.first_name}}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        {% if 'admin' in session.user.roles %}
+                        <li><a class="dropdown-item" href="{{url_for('admin.dashboard')}}">Administrator</a></li>
+                        {% endif %}
+                        <li><a class="dropdown-item" href="{{url_for('views.account')}}">Manage Account</a></li>
+                        <li><a class="dropdown-item" href="{{url_for('auth.logout')}}">Logout</a></li>
+                    </ul>
+                    </li>
+                    {% else %}
+                    <a class="nav-link  {{'text-primary' if page_title == 'Login'}}"
+                        href="{{url_for('auth.login')}}">Login</a>
+                    <a class="nav-link  {{'text-primary' if page_title == 'Register'}}"
+                        href="{{url_for('auth.register')}}">Register</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
-    </div>
 </nav>
 
 <div class="container my-5">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="alert alert-primary" role="alert">
+        <ul class="mb-0">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    {% endwith %}
+
     {% block page_body %}{% endblock %}
 </div>
 {% endblock %}

@@ -14,7 +14,7 @@ REM Install the requirements
 python -m pip install -r requirements.txt
 
 REM Run the Flask app
-start "E-Library" cmd /c "python -m flask --debug run --host=0.0.0.0"
+start "Car Rental" cmd /c "python -m flask --debug run --host=0.0.0.0"
 
 REM Open the Flask app in the default browser
 timeout /t 5

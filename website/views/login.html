@@ -2,6 +2,21 @@
 {% set page_title = 'Login' %}
 
 {% block page_body %}
-<h1>login page</h1>
+<h1 class="mb-4">login page</h1>
+
+<form action="" method="post">
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input name="email" id="email" type="email" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input name="password" id="password" type="password" class="form-control" required>
+        </div>
+    </div>
+
+    <button class="btn btn-lg btn-success" type="submit">Login</button>
+</form>
 {% endblock %}
 
