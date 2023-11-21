@@ -1,0 +1,27 @@
+{% extends 'common.html' %}
+
+{% block main_body %}
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Car Rental</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-mob">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="nav-mob">
+            <div class="navbar-nav">
+                <a class="nav-link {{'text-primary' if page_title == 'Home'}}" href="{{url_for('views.home')}}">Home</a>
+                <a class="nav-link  {{'text-primary' if page_title == 'About'}}"
+                    href="{{url_for('views.about')}}">About</a>
+                <a class="nav-link  {{'text-primary' if page_title == 'Login'}}"
+                    href="{{url_for('auth.login')}}">Login</a>
+                <a class="nav-link  {{'text-primary' if page_title == 'Register'}}"
+                    href="{{url_for('auth.register')}}">Register</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container my-5">
+    {% block page_body %}{% endblock %}
+</div>
+{% endblock %}
