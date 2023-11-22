@@ -40,21 +40,24 @@
         </div>
 </nav>
 
-<div class="container my-5">
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <div class="alert alert-primary" role="alert">
-        <ul class="mb-0">
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="position-fixed top-0 end-0 mt-5">
+    <div class="container">
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+            <ul class="mb-0">
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
     </div>
-    {% endif %}
-    {% endwith %}
-
-    {% block page_body %}{% endblock %}
 </div>
+{% endif %}
+{% endwith %}
+
+{% block page_body %}{% endblock %}
 {% endblock %}
 
 {% block main_script %}

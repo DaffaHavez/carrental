@@ -2,6 +2,38 @@
 {% set page_title = 'Home' %}
 
 {% block page_body %}
-<h1>Home page</h1>
-{% endblock %}
+<style>
+  .hero {
+    position: relative;
+    height: 500px;
+  }
 
+  .hero img {
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .hero .overlay {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to bottom, transparent, #000);
+  }
+</style>
+
+<div class="hero">
+  <img src="{{url_for('static',filename='img/home.jpg')}}" class="img-fluid w-100 object-fit-cover">
+  <div class="overlay"></div>
+  <div class="container position-relative z-2 h-100 d-flex flex-column justify-content-center text-light text-center">
+    <h1 class="display-1 fw-bold">Car Rental</h1>
+  </div>
+</div>
+{% endblock %}
