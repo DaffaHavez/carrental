@@ -39,7 +39,8 @@ def cars():
 
 @admin.route("/bookings")
 def bookings():
-    return render_template("admin/bookings.html")
+    bookings = db.Bookings.find({})
+    return render_template("admin/bookings.html", bookings=bookings)
 
 
 @admin.route("/users")
