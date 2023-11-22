@@ -2,6 +2,24 @@
 {% set page_title = 'Dashboard' %}
 
 {% block page_body %}
-<h1>Dashboard</h1>
-{% endblock %}
+<h1 class="mb-4">Dashboard</h1>
 
+<table class="table">
+  <thead>
+    <tr>
+      <th>Collections</th>
+      <th>Documents</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for collection in collections %}
+    <tr>
+      <td>{{collection.collection}}</td>
+      <td>{{collection.documents}}</td>
+      <td><a href="{{url_for('admin.'+collection.collection|lower)}}">Manage Collection</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

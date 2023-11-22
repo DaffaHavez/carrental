@@ -2,6 +2,32 @@
 {% set page_title = 'Cars' %}
 
 {% block page_body %}
-<h1>Cars</h1>
-{% endblock %}
+<h1 class="mb-4">Cars</h1>
 
+<a href="{{url_for('admin.add_car')}}" class="btn btn-lg btn-primary">Add new car</a>
+
+<table class="table align-middle">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Brand</th>
+      <th>Name</th>
+      <th>Model</th>
+      <th>Quantity</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for car in cars %}
+    <tr>
+      <td><img src="{{car.image}}" class="object-fit-cover" width="100" height="100"></td>
+      <td>{{car.brand}}</td>
+      <td>{{car.name}}</td>
+      <td>{{car.model}}</td>
+      <td>{{car.quantity}}</td>
+      <td><a href="{{url_for('admin.edit_car',car_id=car._id)}}">Edit Car</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

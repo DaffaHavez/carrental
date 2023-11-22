@@ -1,0 +1,57 @@
+{% extends 'admin/admin-layout.html' %}
+{% set page_title = 'Edit Car' %}
+
+{% block page_body %}
+<h1 class="mb-4">Edit Car</h1>
+
+<form action="" method="post" enctype="multipart/form-data" class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+  <div class="col">
+    <div class="mb-3">
+      <label for="brand" class="form-label">Brand</label>
+      <input name="brand" value="{{car.brand}}" id="brand" type="text" placeholder="Toyota" class="form-control"
+        required autocomplete="off">
+    </div>
+
+    <div class="mb-3">
+      <label for="name" class="form-label">Car name</label>
+      <input name="name" value="{{car.name}}" id="name" type="text" placeholder="Camry" class="form-control" required
+        autocomplete="off">
+    </div>
+
+    <div class="mb-3">
+      <label for="model" class="form-label">Model (year)</label>
+      <input name="model" value="{{car.model}}" id="model" type="number" placeholder="2015" class="form-control"
+        required autocomplete="off">
+    </div>
+
+    <div class="mb-3">
+      <label for="quantity" class="form-label">Quantity</label>
+      <input name="quantity" value="{{car.quantity}}" id="quantity" type="number" placeholder="0" class="form-control"
+        required autocomplete="off">
+    </div>
+
+    <div class="mb-3">
+      <label for="image" class="form-label">Image</label>
+      <input name="image" id="image" type="file" accept="image/*" class="form-control" autocomplete="off">
+    </div>
+
+    <div class="d-flex gap-1 flex-wrap">
+      <button class="btn btn-lg btn-success" type="submit">Save changes</button>
+      <a href="{{url_for('admin.delete_car',car_id=car._id)}}" class="btn btn-lg btn-danger">Delete car</a>
+      <a class="btn btn-lg btn-dark" href="{{url_for('admin.cars')}}">Go back</a>
+    </div>
+  </div>
+
+  <div class="col">
+    <img src="{{car.image}}" class="img-fluid object-fit-cover">
+  </div>
+</form>
+{% endblock %}
+
+{% block page_script %}
+<script>
+  document.querySelector('[type="file"]').addEventListener('change', function () {
+    previewFile(this, 'img')
+  })
+</script>
+{% endblock %}

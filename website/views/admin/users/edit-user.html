@@ -1,14 +1,15 @@
 {% extends 'admin/admin-layout.html' %}
-{% set page_title = 'Manage User' %}
+{% set page_title = 'Edit User' %}
 
 {% block page_body %}
-<h1 class="mb-4">Manage User</h1>
+<h1 class="mb-4">Edit User</h1>
 
 <form action="" method="post">
     <div class="col-12 col-md-6 col-lg-4">
         <div class="mb-3">
             <label for="first_name" class="form-label">First Name</label>
-            <input name="first_name" value="{{user.first_name}}" id="first_name" type="text" class="form-control" required autocomplete="off">
+            <input name="first_name" value="{{user.first_name}}" id="first_name" type="text" class="form-control"
+                required autocomplete="off">
         </div>
         <div class="mb-3">
             <label for="last_name" class="form-label">Last Name</label>
@@ -24,7 +25,8 @@
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
-            <input name="password" value="{{user.password}}" id="password" type="password" class="form-control" required>
+            <input name="password" value="{{user.password}}" id="password" type="password" class="form-control"
+                required>
         </div>
         <div class="mb-3">
             <label for="roles" class="form-label">Roles</label>
@@ -32,8 +34,10 @@
         </div>
     </div>
 
-    <button class="btn btn-lg btn-success" type="submit">Save changes</button>
-    <a class="btn btn-lg btn-dark" href="{{url_for('admin.users')}}">Go back</a>
+    <div class="d-flex flex-wrap gap-1">
+        <button class="btn btn-lg btn-success" type="submit">Save changes</button>
+        <a href="{{url_for('admin.delete_user',user_id=user._id)}}" class="btn btn-lg btn-danger">Delete user</a>
+        <a class="btn btn-lg btn-dark" href="{{url_for('admin.users')}}">Go back</a>
+    </div>
 </form>
 {% endblock %}
-

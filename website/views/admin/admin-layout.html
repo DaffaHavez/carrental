@@ -28,6 +28,10 @@
                         Welcome, {{session.user.first_name}}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
+                        {% if 'admin' in session.user.roles %}
+                        <li><a class="dropdown-item" href="{{url_for('admin.dashboard')}}">Administrator</a></li>
+                        {% endif %}
+                        <li><a class="dropdown-item" href="{{url_for('account.manage')}}">Manage Account</a></li>
                         <li><a class="dropdown-item" href="{{url_for('auth.logout')}}">Logout</a></li>
                     </ul>
                     </li>
@@ -57,4 +61,9 @@
 
     {% block page_body %}{% endblock %}
 </div>
+{% endblock %}
+
+{% block main_script %}
+<script src="{{url_for('static',filename='script.js')}}"></script>
+{% block page_script %}{% endblock %}
 {% endblock %}
