@@ -39,7 +39,18 @@ def cars():
 
 @admin.route("/bookings")
 def bookings():
-    bookings = db.Bookings.find({})
+    pipeline = [
+        {"$sort": {"_id": -1}},
+        {
+            "$lookup": {
+                "from": "Cars",
+                "localField": "car_id",
+                "foreignField": "_id",
+                "as": "car",
+            }
+        },
+    ]
+    bookings = db.Bookings.aggregate(pipeline)
     return render_template("admin/bookings.html", bookings=bookings)
 
 
@@ -55,6 +66,8 @@ def add_car():
     if request.method == "POST":
         form = request.form.to_dict()
         image = request.files.get("image")
+        form["price"] = int(form["price"])
+        form["quantity"] = int(form["quantity"])
         form["image"] = convert_img_to_base64(image)
         db.Cars.insert_one(form)
         flash(f'Successfully added {form["brand"]} {form["name"]} to the database')
@@ -69,6 +82,8 @@ def edit_car(car_id):
     if request.method == "POST":
         form = request.form.to_dict()
         image = request.files.get("image")
+        form["price"] = int(form["price"])
+        form["quantity"] = int(form["quantity"])
         if image:
             form["image"] = convert_img_to_base64(image)
         car = db.Cars.find_one_and_update(car, {"$set": form}, return_document=True)
@@ -81,6 +96,7 @@ def edit_car(car_id):
 @admin.route("/cars/delete-car/<car_id>", methods=["GET", "POST"])
 def delete_car(car_id):
     db.Cars.delete_one({"_id": ObjectId(car_id)})
+    db.Bookings.delete_many({"car_id": ObjectId(car_id)})
     flash("Car deleted successfully!")
     return redirect(url_for("admin.cars"))
 
@@ -101,6 +117,7 @@ def edit_user(user_id):
 @admin.route("/users/delete-user/<user_id>", methods=["GET", "POST"])
 def delete_user(user_id):
     db.Users.delete_one({"_id": ObjectId(user_id)})
+    db.Bookings.delete_many({"user_id": ObjectId(user_id)})
     flash("User deleted successfully!")
     return redirect(url_for("admin.users"))
 

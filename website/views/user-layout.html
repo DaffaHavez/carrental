@@ -10,6 +10,12 @@
         <div class="collapse navbar-collapse" id="nav-mob">
             <div class="navbar-nav">
                 <a class="nav-link {{'text-primary' if page_title == 'Home'}}" href="{{url_for('views.home')}}">Home</a>
+                <a class="nav-link  {{'text-primary' if page_title == 'Cars'}}"
+                    href="{{url_for('views.cars')}}">Cars</a>
+                {% if session.user %}
+                <a class="nav-link  {{'text-primary' if page_title == 'Bookings'}}"
+                    href="{{url_for('account.bookings')}}">My Bookings</a>
+                {% endif %}
                 <a class="nav-link  {{'text-primary' if page_title == 'About'}}"
                     href="{{url_for('views.about')}}">About</a>
                 <a class="nav-link  {{'text-primary' if page_title == 'Contact'}}"

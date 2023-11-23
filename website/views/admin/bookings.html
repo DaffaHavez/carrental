@@ -2,6 +2,42 @@
 {% set page_title = 'Bookings' %}
 
 {% block page_body %}
-<h1>Bookings</h1>
-{% endblock %}
+<h1 class="mb-5">Bookings</h1>
 
+<h5 class="mb-3 fs-5 badge bg-secondary fw-normal">Pending Confirmation</h5>
+<div class="table-responsive">
+  <table class="table align-middle">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Car</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Days</th>
+        <th>Total Price</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for booking in bookings if booking.status == "pending" %}
+      <tr>
+        <td><img src="{{booking.car[0].image}}" class="object-fit-cover" width="100" height="100"></td>
+        <td>{{booking.car[0].brand}} {{booking.car[0].name}}</td>
+        <td>{{booking.date_start.strftime('%d-%m-%Y')}}</td>
+        <td>{{booking.date_end.strftime('%d-%m-%Y')}}</td>
+        <td>{{booking.days}}</td>
+        <td>${{booking.total_price}}</td>
+        <td>
+          <div class="d-flex flex-wrap gap-1 justify-content-end">
+            <a href="" class="btn btn-sm btn-success">Accept</a>
+            <a href="" class="btn btn-sm btn-danger">Cancel</a>
+            <a href="{{url_for('admin.edit_user',user_id=booking.user_id)}}" class="btn btn-sm btn-primary">
+              User details</a>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

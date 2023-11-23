@@ -1,0 +1,39 @@
+{% extends 'user-layout.html' %}
+{% set page_title = 'Bookings' %}
+
+{% block page_body %}
+<div class="container my-5">
+  <h1 class="mb-5">My Bookings</h1>
+
+  {% set status_colors = {'active': 'success', 'pending': 'secondary','ended':'danger','cancelled':'danger'} %}
+
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Car</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Days</th>
+          <th>Total Price</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for booking in bookings %}
+        <tr>
+          <td><img src="{{booking.car[0].image}}" class="object-fit-cover" width="100" height="100"></td>
+          <td>{{booking.car[0].brand}} {{booking.car[0].name}}</td>
+          <td>{{booking.date_start.strftime('%d-%m-%Y')}}</td>
+          <td>{{booking.date_end.strftime('%d-%m-%Y')}}</td>
+          <td>{{booking.days}}</td>
+          <td>${{booking.total_price}}</td>
+          <td><span class="badge bg-{{status_colors.get(booking.status)}} fw-normal">{{booking.status}}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

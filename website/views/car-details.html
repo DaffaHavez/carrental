@@ -1,0 +1,94 @@
+{% extends 'user-layout.html' %}
+{% set page_title = car.brand + ' ' + car.name %}
+
+{% block page_body %}
+<div class="container my-5">
+  <h1 class="mb-5">{{car.brand}} {{car.name}}</h1>
+
+  <div class="row row-gap-3">
+    <div class="col-12 col-lg-8">
+      <img src="{{car.image}}" class="img-fluid object-fit-cover">
+    </div>
+
+    <div class="col-12 col-lg-4">
+      <table class="table">
+        <tbody>
+          <tr>
+            <th>Name</th>
+            <td class="text-end">${{car.name}}</td>
+          </tr>
+          <tr>
+            <th>Brand</th>
+            <td class="text-end">${{car.brand}}</td>
+          </tr>
+          <tr>
+            <th>Model</th>
+            <td class="text-end">{{car.model}}</td>
+          </tr>
+          <tr>
+            <th>Price</th>
+            <td class="text-end">${{car.price}} (per/day)</td>
+          </tr>
+          <tr>
+            <th>In Garage</th>
+            <td class="text-end">{{car.quantity}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <form class="mt-5" method="post" action="{{url_for('account.rent_car',car_id=car._id)}}">
+        <h5 class="mb-3 text-secondary">Place order</h5>
+        <div class="form-floating mb-3">
+          <input name="date_start" id="date_start" type="date" class="form-control" placeholder="" required>
+          <label for="date_start">From</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input name="date_end" id="date_end" type="date" class="form-control" placeholder="" required>
+          <label for="date_end">To</label>
+        </div>
+        <table class="table fs-4">
+          <tbody>
+            <tr>
+              <th>Total</th>
+              <td class="text-end">
+                <span class="text-danger fw-bold">$<span id="total-price">{{car.price}}</span></span>
+                <span id="total-days" class="small text-secondary">(1 day)</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button type="submit" class="btn btn-lg btn-primary w-100">Rent</button>
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block page_script %}
+<script>
+  const price = parseInt("{{car.price}}")
+  const date_start = document.querySelector('[name="date_start"]')
+  const date_end = document.querySelector('[name="date_end"]')
+
+  function calculate_total() {
+    var from = date_start.value
+    var to = date_end.value
+    if (from && to) {
+      from = new Date(from)
+      to = new Date(to)
+
+      const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+      const diffInTime = Math.abs(from.getTime() - to.getTime());
+      const days = Math.ceil(diffInTime / oneDay);
+
+      var total = days * price
+      document.getElementById('total-days').innerText = `(${days} ${(days > 1) ? 'days' : 'day'})`
+      document.getElementById('total-price').innerText = total
+    }
+  }
+
+  date_start.addEventListener('change', calculate_total)
+  date_end.addEventListener('change', calculate_total)
+</script>
+{% endblock %}
