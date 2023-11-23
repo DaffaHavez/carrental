@@ -61,7 +61,12 @@
           <h5 class="card-title">{{car.brand}} {{car.name}}</h5>
           <p class="card-text mb-1 text-secondary">{{car.model}}</p>
           <p class="card-text mb-1">Price: <span class="text-danger fw-bold">${{car.price}}</span> per/day</p>
-          <p class="card-text">Cars in garage: {{car.quantity|int - (car.rented|int if car.rented else 0)}}</p>
+          <p class="card-text">
+            Cars available: {{car.available}}
+            {% if not car.available >0 %}
+            <span class="badge bg-danger">Not Available</span>
+            {% endif %}
+          </p>
           <a href="{{url_for('views.car_details',car_id=car._id)}}"
             class="stretched-link mt-auto btn btn-outline-primary">Rent Car</a>
         </div>

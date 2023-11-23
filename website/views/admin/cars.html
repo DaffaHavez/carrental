@@ -16,19 +16,21 @@
         <th>Model</th>
         <th>Price</th>
         <th>Quantity</th>
+        <th>Available</th>
         <th></th>
       </tr>
     </thead>
     <tbody>
       {% for car in cars %}
       <tr>
-        <td><img src="{{car.image}}" class="object-fit-cover" width="100" height="100"></td>
+        <td><img src="{{car.image}}" class="object-fit-cover" width="50" height="50"></td>
         <td>{{car.brand}}</td>
         <td>{{car.name}}</td>
         <td>{{car.model}}</td>
         <td>{{car.price}}</td>
         <td>{{car.quantity}}</td>
-        <td><a href="{{url_for('admin.edit_car',car_id=car._id)}}">Edit Car</a></td>
+        <td>{{car.available}}</td>
+        <td><a href="{{url_for('admin.edit_car',car_id=car._id)}}" class="btn btn-sm btn-primary">Edit Car</a></td>
       </tr>
       {% endfor %}
     </tbody>

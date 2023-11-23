@@ -1,15 +1,23 @@
 from flask import Blueprint, render_template, session, abort, request, flash
 from . import db
 from bson import ObjectId
+from datetime import datetime
 
 db = db.db
 views = Blueprint("views", __name__)
+
+@views.before_request
+def update_booking_status():
+    today = datetime.now()
+    db.Bookings.update_many(
+        {"status": "active", "date_end": {"$lt": today}}, {"$set": {"status": "ended"}}
+    )
 
 
 @views.route("/")
 def home():
     brands = db.Cars.distinct("brand")
-    cars = db.Cars.find({}).sort("model", -1).limit(6)
+    cars = get_cars([{"$sort": {"model": -1}}, {"$limit": 6}])
     return render_template("home.html", brands=brands, cars=cars)
 
 
@@ -22,23 +30,25 @@ def cars():
     sort = request.args.get("sort", default="name")
     order = request.args.get("order")
 
-    query = {}
+    query = []
     if brand in brands:
-        query["brand"] = brand
+        query.append({"brand": brand})
     if search:
-        query["$and"] = [
-            {"name": {"$regex": i, "$options": "i"}} for i in search.split()
-        ]
+        query.append(
+            {"$and": [{"name": {"$regex": i, "$options": "i"}} for i in search.split()]}
+        )
     order = -1 if order == "desc" else 1
-
-    cars = db.Cars.find(query).sort(sort, order)
+    query = [{"$match": {"$and": query}}] if query else []
+    query.append({"$sort": {sort: order}})
+    cars = get_cars(query)
     return render_template("cars.html", cars=cars, brands=brands)
 
 
 @views.route("/cars/<car_id>")
 def car_details(car_id):
-    car = db.Cars.find_one({"_id": ObjectId(car_id)})
+    car = get_cars([{"$match":{"_id":ObjectId(car_id)}}])[0]
     return render_template("car-details.html", car=car)
+
 
 @views.route("/about")
 def about():
@@ -48,3 +58,25 @@ def about():
 @views.route("/contact")
 def contact():
     return render_template("contact.html")
+
+
+def get_cars(filter=[]):
+    pipeline = filter + [
+        {
+            "$lookup": {
+                "from": "Bookings",
+                "localField": "_id",
+                "foreignField": "car_id",
+                "pipeline": [{"$match": {"status": "active"}}],
+                "as": "bookings",
+            }
+        },
+        {
+            "$addFields": {
+                "available": {"$subtract": ["$quantity", {"$size": "$bookings"}]}
+            }
+        },
+    ]
+    cars = list(db.Cars.aggregate(pipeline))
+    return cars
+

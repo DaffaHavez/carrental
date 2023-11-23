@@ -11,6 +11,8 @@
     </div>
 
     <div class="col-12 col-lg-4">
+      <p class="fs-6 badge bg-{{'success' if car.available > 0 else 'danger'}}">{{'Not ' if not car.available > 0}}Available</p>
+
       <table class="table">
         <tbody>
           <tr>
@@ -30,8 +32,8 @@
             <td class="text-end">${{car.price}} (per/day)</td>
           </tr>
           <tr>
-            <th>In Garage</th>
-            <td class="text-end">{{car.quantity}}</td>
+            <th>Available</th>
+            <td class="text-end">{{car.available}}</td>
           </tr>
         </tbody>
       </table>

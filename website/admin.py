@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, session, flash, redirect, url_for,
 from . import db
 from bson import ObjectId
 import base64
+from .views import get_cars
 
 db = db.db
 admin = Blueprint("admin", __name__)
@@ -33,7 +34,7 @@ def dashboard():
 
 @admin.route("/cars")
 def cars():
-    cars = db.Cars.find({})
+    cars = get_cars()
     return render_template("admin/cars.html", cars=cars)
 
 
@@ -49,8 +50,15 @@ def bookings():
                 "as": "car",
             }
         },
+        {
+            "$facet": {
+                "active": [{"$match": {"status": "active"}}],
+                "pending": [{"$match": {"status": "pending"}}],
+                "other": [{"$match": {"status": {"$nin": ["active", "pending"]}}}],
+            }
+        },
     ]
-    bookings = db.Bookings.aggregate(pipeline)
+    bookings = list(db.Bookings.aggregate(pipeline))[0]
     return render_template("admin/bookings.html", bookings=bookings)
 
 
@@ -58,6 +66,18 @@ def bookings():
 def users():
     users = db.Users.find({})
     return render_template("admin/users.html", users=users)
+
+
+@admin.route("/bookings/manage/<booking_id>/<action>")
+def manage_booking(booking_id, action):
+    status = "pending"
+    if action == "accept":
+        status = "active"
+    elif action == "cancel":
+        status = "cancelled"
+    db.Bookings.update_one({"_id": ObjectId(booking_id)}, {"$set": {"status": status}})
+    flash("Booking status updated!")
+    return redirect(url_for("admin.bookings"))
 
 
 # Add Cars
