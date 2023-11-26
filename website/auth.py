@@ -40,6 +40,7 @@ def login():
     return render_template("login.html")
 
 
+# Function to create new account
 @auth.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -58,6 +59,7 @@ def register():
     return render_template("register.html")
 
 
+# Function to log out from the system
 @auth.route("/logout")
 def logout():
     session.pop("user", None)

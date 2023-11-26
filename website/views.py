@@ -14,9 +14,12 @@ def update_booking_status():
     )
 
 
+# Home page
 @views.route("/")
 def home():
+    # Getting list of brans
     brands = db.Cars.distinct("brand")
+    # List of some cars
     cars = get_cars([{"$sort": {"model": -1}}, {"$limit": 6}])
     return render_template("home.html", brands=brands, cars=cars)
 
