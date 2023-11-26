@@ -3,6 +3,7 @@ from . import db
 from bson import ObjectId
 import base64
 from .views import get_cars
+import requests
 
 db = db.db
 admin = Blueprint("admin", __name__)
@@ -88,8 +89,8 @@ def add_car():
         image = request.files.get("image")
         form["price"] = int(form["price"])
         form["quantity"] = int(form["quantity"])
-        form['model'] = int(form['model'])
-        form["image"] = convert_img_to_base64(image)
+        form["model"] = int(form["model"])
+        form["image"] = upload_image_to_cloud(image)
         db.Cars.insert_one(form)
         flash(f'Successfully added {form["brand"]} {form["name"]} to the database')
         return redirect(url_for("admin.cars"))
@@ -105,9 +106,9 @@ def edit_car(car_id):
         image = request.files.get("image")
         form["price"] = int(form["price"])
         form["quantity"] = int(form["quantity"])
-        form['model'] = int(form['model'])
+        form["model"] = int(form["model"])
         if image:
-            form["image"] = convert_img_to_base64(image)
+            form["image"] = upload_image_to_cloud(image, form["name"])
         car = db.Cars.find_one_and_update(car, {"$set": form}, return_document=True)
         flash("Car details updated successfully!")
 
@@ -149,3 +150,17 @@ def convert_img_to_base64(image):
     image = base64.b64encode(image).decode("utf-8")
     image = f"data:image/*;base64,{image}"
     return image
+
+
+def upload_image_to_cloud(image, name):
+    image_url = None
+    try:
+        API_KEY = "3ec25771a4f953fa9ff696164d6a2146"
+        URL = "https://api.imgbb.com/1/upload"
+        image = base64.b64encode(image.read())
+        data = {"key": API_KEY, "image": image, "name": name}
+        response = requests.post(URL, data).json()
+        image_url = response["data"]["url"]
+    except:
+        pass
+    return image_url
