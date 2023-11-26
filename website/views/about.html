@@ -1,18 +1,36 @@
 {% extends 'user-layout.html' %}
 {% set page_title = 'About' %}
 
-{% block page_body %}
-<div class="container my-5">
-  <h1>About us</h1>
-<hr>
-<div class="container">
-  <img src="/website/assets/img/About.jpg" alt="Notebook" style="width:100%;">
-  <div class="content">
-    <h1>Who are we?</h1>
-    <p>Our company is committed to providing exceptional service to its customers. This is achieved by ensuring the availability of a wide range of vehicles, offering competitive rates, and providing excellent customer service. The company also places a high priority on safety and reliability, ensuring that all vehicles are in good condition before they are rented out 9.
 
-      The company also offers a convenient online booking system, allowing customers to book a car, check availability, and make payments online. This system also allows customers to track their reservations and receive reminders about their upcoming rentals 6.
-      
-      The company operates from multiple locations, providing convenience to customers in various areas. The company also offers a fleet of vehicles at each location, ensuring that customers can always find a suitable car for their needs </p>
+
+{% block page_body %}
+<style>
+  .card .card-img-overlay {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, .5), #000);
+    text-align: justify;
+  }
+</style>
+
+<div class="container my-5">
+  <h1>About Us</h1>
+  <hr>
+
+  <div class="card text-bg-dark h-100 border-0 rounded-5 overflow-hidden">
+    <img src="{{url_for('static',filename='img/about.jpg')}}" class="card-img h-100 object-fit-cover rounded-5">
+    <div class="card-img-overlay">
+      <div class="d-flex flex-column h-100 justify-content-center align-items-center">
+        <h1 class="card-title">Who are we?</h1>
+        <p class="fs-5 card-text col-12 col-md-10 col-lg-8">Our company is committed to providing exceptional service to
+          its customers. This is achieved by ensuring the availability of a wide range of vehicles, offering competitive
+          rates, and providing excellent customer service. The company also places a high priority on safety and
+          reliability, ensuring that all vehicles are in good condition before they are rented out 9. The company also
+          offers a convenient online booking system, allowing customers to book a car, check availability, and make
+          payments online. This system also allows customers to track their reservations and receive reminders about
+          their upcoming rentals 6.The company operates from multiple locations, providing convenience to customers in
+          various areas. The company also offers a fleet of vehicles at each location, ensuring that customers can
+          always find a suitable car for their needs</p>
+      </div>
+    </div>
   </div>
+</div>
 {% endblock %}

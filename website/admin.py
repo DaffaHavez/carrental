@@ -88,6 +88,7 @@ def add_car():
         image = request.files.get("image")
         form["price"] = int(form["price"])
         form["quantity"] = int(form["quantity"])
+        form['model'] = int(form['model'])
         form["image"] = convert_img_to_base64(image)
         db.Cars.insert_one(form)
         flash(f'Successfully added {form["brand"]} {form["name"]} to the database')
@@ -104,6 +105,7 @@ def edit_car(car_id):
         image = request.files.get("image")
         form["price"] = int(form["price"])
         form["quantity"] = int(form["quantity"])
+        form['model'] = int(form['model'])
         if image:
             form["image"] = convert_img_to_base64(image)
         car = db.Cars.find_one_and_update(car, {"$set": form}, return_document=True)
