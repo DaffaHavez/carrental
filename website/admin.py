@@ -24,6 +24,7 @@ def is_user_admin():
         return redirect(url_for("views.home"))
 
 
+# Admin dashboard
 @admin.route("/")
 def dashboard():
     collections = [

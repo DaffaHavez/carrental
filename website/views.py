@@ -6,6 +6,7 @@ from datetime import datetime
 db = db.db
 views = Blueprint("views", __name__)
 
+
 @views.before_request
 def update_booking_status():
     today = datetime.now()
@@ -24,6 +25,7 @@ def home():
     return render_template("home.html", brands=brands, cars=cars)
 
 
+# This page shows a list of cars
 @views.route("/cars")
 def cars():
     brands = db.Cars.distinct("brand")
@@ -49,7 +51,7 @@ def cars():
 
 @views.route("/cars/<car_id>")
 def car_details(car_id):
-    car = get_cars([{"$match":{"_id":ObjectId(car_id)}}])[0]
+    car = get_cars([{"$match": {"_id": ObjectId(car_id)}}])[0]
     return render_template("car-details.html", car=car)
 
 
@@ -82,4 +84,3 @@ def get_cars(filter=[]):
     ]
     cars = list(db.Cars.aggregate(pipeline))
     return cars
-
