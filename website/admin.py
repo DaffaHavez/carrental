@@ -91,7 +91,7 @@ def add_car():
         form["price"] = int(form["price"])
         form["quantity"] = int(form["quantity"])
         form["model"] = int(form["model"])
-        form["image"] = upload_image_to_cloud(image)
+        form["image"] = upload_image_to_cloud(image, form["name"])
         db.Cars.insert_one(form)
         flash(f'Successfully added {form["brand"]} {form["name"]} to the database')
         return redirect(url_for("admin.cars"))
